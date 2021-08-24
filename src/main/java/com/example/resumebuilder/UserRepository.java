@@ -1,4 +1,4 @@
-package com.example.resumebuilder.repository;
+package com.example.resumebuilder;
 
 
 import com.example.resumebuilder.models.User;

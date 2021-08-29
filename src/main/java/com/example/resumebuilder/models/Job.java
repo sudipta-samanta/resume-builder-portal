@@ -1,9 +1,10 @@
 package com.example.resumebuilder.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,11 @@ public class Job {
     private int id;
     private String company;
     private String designation;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    private boolean isCurrentJob;
+    private boolean currentJob;
     @ElementCollection(targetClass = String.class)
     List<String> responsibilities = new ArrayList<>();
 
@@ -61,14 +64,6 @@ public class Job {
         this.endDate = endDate;
     }
 
-    public boolean isCurrentJob() {
-        return isCurrentJob;
-    }
-
-    public void setCurrentJob(boolean currentJob) {
-        isCurrentJob = currentJob;
-    }
-
     public List<String> getResponsibilities() {
         return responsibilities;
     }
@@ -93,5 +88,13 @@ public class Job {
     }
     public String getFormattedEndDate(){
         return endDate.format(DateTimeFormatter.ofPattern("MMM yyyy"));
+    }
+
+    public void setCurrentJob(boolean currentJob) {
+        this.currentJob = currentJob;
+    }
+
+    public boolean isCurrentJob() {
+        return currentJob;
     }
 }

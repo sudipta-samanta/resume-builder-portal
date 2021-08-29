@@ -109,7 +109,9 @@
 								<h2 th:text="${job.company}">Facebook</h2>
 								<h3 th:text="${job.designation}">Senior Interface Designer</h3>
 								<h4><span th:text="${job.formattedStartDate}">2005</span> - <span th:text="${job.isCurrentJob}? 'Present' : ${job.formattedEndDate}">2007</span></h4>
-								<p>Intrinsicly enable optimal core competencies through corporate relationships. Phosfluorescently implement worldwide vortals and client-focused imperatives. Conveniently initiate virtual paradigms and top-line convergence. </p>
+								<ul th:each="responsibility : ${job.responsibilities}">
+									<li th:text="${responsibility}">Responsibility</li>
+								</ul>
 							</div>
 
 						</div><!--// .yui-u -->

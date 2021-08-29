@@ -53,26 +53,16 @@
 						<div class="yui-u first">
 							<h2>Skills</h2>
 						</div>
-						<div class="yui-u">
+						<div class="yui-u" th:each="skill : ${userProfile.skills}">
 
 								<div class="talent">
-									<h2>Web Design</h2>
-									<p>Assertively exploit wireless initiatives rather than synergistic core competencies.	</p>
-								</div>
-
-								<div class="talent">
-									<h2>Interface Design</h2>
-									<p>Credibly streamline mission-critical value with multifunctional functionalities.	 </p>
-								</div>
-
-								<div class="talent">
-									<h2>Project Direction</h2>
-									<p>Proven ability to lead and manage a wide variety of design and development projects in team and independent situations.</p>
+									<h2 th:text="${skill}">Web Design</h2>
+									<!--<p>Assertively exploit wireless initiatives rather than synergistic core competencies.	</p>-->
 								</div>
 						</div>
 					</div><!--// .yui-gf -->
 
-					<div class="yui-gf">
+					<!--<div class="yui-gf">
 						<div class="yui-u first">
 							<h2>Technical</h2>
 						</div>
@@ -95,7 +85,7 @@
 								<li class="last">Linux</li>
 							</ul>
 						</div>
-					</div><!--// .yui-gf-->
+					</div>-->
 
 					<div class="yui-gf">
 	
@@ -122,9 +112,9 @@
 						<div class="yui-u first">
 							<h2>Education</h2>
 						</div>
-						<div class="yui-u">
-							<h2>Indiana University - Bloomington, Indiana</h2>
-							<h3>Dual Major, Economics and English &mdash; <strong>4.0 GPA</strong> </h3>
+						<div class="yui-u" th:each="education : ${userProfile.educations}">
+							<h2 th:text="${education.college}">Indiana University - Bloomington, Indiana</h2>
+							<h3 th:text="${education.qualification}">Dual Major, Economics and English &mdash; <strong>4.0 GPA</strong> </h3>
 						</div>
 					</div><!--// .yui-gf -->
 

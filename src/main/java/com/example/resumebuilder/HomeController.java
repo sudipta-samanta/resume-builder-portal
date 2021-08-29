@@ -1,5 +1,6 @@
 package com.example.resumebuilder;
 
+import com.example.resumebuilder.models.Education;
 import com.example.resumebuilder.models.Job;
 import com.example.resumebuilder.models.UserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,13 +50,33 @@ public class HomeController {
         job2.getResponsibilities().add("Oversee all hiring for BOH employee");
         job2.getResponsibilities().add("Perform weekly food inventory");
 
-
-        List<Job> jobs = new ArrayList<>();
-        jobs.add(job1);
-        jobs.add(job2);
         userProfile.getJobs().clear();
         userProfile.getJobs().add(job1);
         userProfile.getJobs().add(job2);
+
+        Education e1 = new Education();
+        e1.setStartDate(LocalDate.of(2019, 1, 1));
+        e1.setEndDate(LocalDate.of(2019, 12, 30));
+        e1.setCollege("College 1");
+        e1.setQualification("some degree");
+        e1.setSummary("Studied a lot");
+
+        Education e2 = new Education();
+        e2.setStartDate(LocalDate.of(2019, 1, 1));
+        e2.setEndDate(LocalDate.of(2019, 12, 30));
+        e2.setCollege("College 2");
+        e2.setQualification("another degree");
+        e2.setSummary("Studied a lot again");
+
+        userProfile.getEducations().clear();
+        userProfile.getEducations().add(e1);
+        userProfile.getEducations().add(e2);
+
+        userProfile.getSkills().clear();
+        userProfile.getSkills().add("Recipes and menu planning");
+        userProfile.getSkills().add("Signature dish creation");
+        userProfile.getSkills().add("Kitchen Management");
+        userProfile.getSkills().add("Food plating and presentation");
 
         repository.save(userProfile);
 
@@ -63,8 +86,25 @@ public class HomeController {
     }
 
     @GetMapping("/edit")
-    public String edit(){
-        return "edit page";
+    public String edit(Principal principal, Model model){
+        String userId = principal.getName();
+
+        Optional<UserProfile> userProfileOptional = repository.findByUserName(userId);
+        userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userId));
+
+        model.addAttribute("userId", userId);
+        UserProfile userProfile = userProfileOptional.get();
+        model.addAttribute("userProfile", userProfile);
+
+        return "profile-edit";
+    }
+
+    @PostMapping("/edit")
+    public String postEdit(Principal principal, Model model){
+        //model.addAttribute("userId", principal.getName());
+        String userId = principal.getName();
+        // save updated values in form
+        return "redirect:/view/" + userId;
     }
 
     @GetMapping("/view/{userId}")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -100,11 +101,16 @@ public class HomeController {
     }
 
     @PostMapping("/edit")
-    public String postEdit(Principal principal, Model model){
-        //model.addAttribute("userId", principal.getName());
-        String userId = principal.getName();
+    public String postEdit(Principal principal, Model model, @ModelAttribute UserProfile userProfile){
+        String userName = principal.getName();
+        Optional<UserProfile> userProfileOptional = repository.findByUserName(userName);
+        userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userName));
+        int id = userProfileOptional.get().getId();
+        userProfile.setId(id);
+        userProfile.setUserName(userName);
+        repository.save(userProfile);
         // save updated values in form
-        return "redirect:/view/" + userId;
+        return "redirect:/view/" + userName;
     }
 
     @GetMapping("/view/{userId}")

@@ -114,7 +114,11 @@ public class HomeController {
     }
 
     @GetMapping("/view/{userId}")
-    public String view(@PathVariable String userId, Model model){
+    public String view(Principal principal, @PathVariable String userId, Model model){
+        if(principal != null && principal.getName() != ""){
+            boolean currentUsersProfile = principal.getName().equals(userId);
+            model.addAttribute("currentUsersProfile", currentUsersProfile);
+        }
         Optional<UserProfile> userProfileOptional = repository.findByUserName(userId);
         userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userId));
 
@@ -124,6 +128,21 @@ public class HomeController {
         //return "profile";
 
         return "profile-templates/" + userProfile.getTheme() + "/index";
+    }
+
+    @GetMapping("/delete")
+    public String delete(Principal principal, Model model, @RequestParam String type, @RequestParam int index) {
+        String userName = principal.getName();
+        Optional<UserProfile> userProfileOptional = repository.findByUserName(userName);
+        userProfileOptional.orElseThrow(() -> new RuntimeException("Not found: " + userName));
+        UserProfile userProfile = userProfileOptional.get();
+
+        if ("job".equals(type)) userProfile.getJobs().remove(index);
+        else if ("education".equals(type)) userProfile.getEducations().remove(index);
+        else if ("skill".equals(type)) userProfile.getSkills().remove(index);
+
+        repository.save(userProfile);
+        return "redirect:/edit/";
     }
 }
 

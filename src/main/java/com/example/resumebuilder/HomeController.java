@@ -23,7 +23,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(){
-        Optional<UserProfile> profileOptional = repository.findByUserName("amit");
+        /*Optional<UserProfile> profileOptional = repository.findByUserName("amit");
         profileOptional.orElseThrow(() -> new RuntimeException("Not found"));
         UserProfile userProfile = profileOptional.get();
 
@@ -80,7 +80,8 @@ public class HomeController {
 
 
 
-        return "profile";
+        return "profile";*/
+        return "index";
     }
 
     @GetMapping("/edit")
